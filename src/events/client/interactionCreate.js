@@ -2,17 +2,17 @@ const { Integration } = require("discord.js")
 
 module.exports={
     name:"interactionCreate",
-    async execute(interactionCreate,client){
+    async execute(interaction,client){
      
-        if(! Integration.isChatInputCommnnds())
+        if(! interaction.isChatInputCommnnds())
         {
             return;
         }
         
-        const command=client.commands.get(Integration.commandName);
+        const command=client.commands.get(interaction.commandName);
 
         if(!command){
-           return Integration.reply({
+           return interaction.reply({
             content:"❌ Command not found",
             ephemeral:true
            });
