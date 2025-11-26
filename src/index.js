@@ -20,6 +20,7 @@ const fs=require('fs');
 const path=require('path');
 require('dotenv').config();
 
+const connectDB = require('./database/connect');
 // 1)
 const client=new Client({
     intents:[GatewayIntentBits.Guilds]
@@ -28,7 +29,7 @@ const client=new Client({
 client.commands=new Collection();
 
 //2)
-const commandsFolder=path.join(__dirname,'src','commands');
+const commandsFolder=path.join(__dirname,'commands');
 const commandsCategories=fs.readdirSync(commandsFolder);
 
 
@@ -44,9 +45,9 @@ for(const folder of commandsCategories){
 }
 
 //3)
-const eventsPath=path.join(__dirname,'src','events');
-const eventFolders=fs.readdirSync(eventspath);
-const eventFiles=fs.readdirSync(eventpath).filter(file=>file.endsWith('.js'));
+const eventsPath=path.join(__dirname,'events');
+const eventFolders=fs.readdirSync(eventsPath);
+const eventFiles=fs.readdirSync(eventsPath).filter(file=>file.endsWith('.js'));
 
 
 for (const folder of eventFolders) {
@@ -64,4 +65,7 @@ for (const folder of eventFolders) {
 }
 
 //4)
-client.login(process.env.TOKEN);
+(async () => {
+    await connectDB();
+    client.login(process.env.TOKEN);
+})();
